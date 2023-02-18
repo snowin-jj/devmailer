@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import { useState } from 'react';
-import { getServerSession } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import {
 	Box,
@@ -18,7 +17,6 @@ import {
 import { CopyIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useMe } from '@/lib/hooks';
 import { generateAvatar } from '@/utils/helper';
-import { authOptions } from './api/auth/[...nextauth]';
 import LoadingScreen from '@/layout/LoadingScreen';
 import OnBoard from '@/components/OnBoard';
 import CustomButton from '@/components/general/CustomButton';
@@ -54,65 +52,64 @@ const Dashboard = () => {
 			<Center
 				minH='100vh'
 				maxW={{ sm: 'fit-content', md: '28rem' }}
-				gap={{ sm: '2', md: '2rem' }}
+				gap={{ sm: '2', md: '1rem' }}
 				mx='auto'
 				mt='-4rem'
-				flexDir={{ sm: 'column', md: 'row' }}
+				flexDir={{ sm: 'column' }}
 			>
-				<Box
-					boxShadow='2xl'
-					width='full'
-					maxWidth={{ sm: '20', md: '40' }}
-					overflow='hidden'
-				>
+				<Box boxShadow='2xl' width='fit-content' overflow='hidden'>
 					<Image
 						src={`${user.image ?? generateAvatar(user.name)}`}
 						alt='profile photo'
-						width={400}
-						height={400}
+						width={120}
+						height={120}
+						quality={100}
 						priority
 					/>
 				</Box>
-				<VStack
-					w='full'
-					align={{ sm: 'center', md: 'flex-start' }}
-					justify='center'
-				>
-					<Heading size={{ sm: 'md', md: 'xl' }}>{user.name}</Heading>
-					<Text fontSize={{ sm: 'xs', md: 'md' }}>{user.email}</Text>
+				<VStack w='full' align={{ sm: 'center' }} justify='center'>
+					<Box textAlign={{ sm: 'center' }}>
+						<Heading size={{ sm: 'md', md: 'xl' }}>
+							{user.name}
+						</Heading>
+						<Text fontSize={{ sm: 'xs', md: 'sm' }}>
+							{user.email}
+						</Text>
+					</Box>
+					<Text
+						as='span'
+						fontWeight='bold'
+						fontSize={{ sm: 'xs', md: 'md' }}
+					>
+						Api Key
+					</Text>
 					<Box
 						w='full'
 						display='flex'
 						flexDir={{ sm: 'column', md: 'row' }}
-						alignItems={{ sm: 'center', md: 'flex-end' }}
+						alignItems='center'
+						justifyContent='center'
 						gap={{ sm: '1', md: '2' }}
+						pos='relative'
 					>
-						<FormLabel
-							htmlFor='apikey'
-							textAlign={{ sm: 'center', md: 'left' }}
+						<FormInput
+							name='apikey'
+							type={`${visible ? 'text' : 'password'}`}
+							w={{ sm: 'full', md: 'fit-content' }}
+							otherProps={{
+								value: user.apikey,
+								h: 'fit-content',
+								px: '2',
+								py: '1',
+								fontSize: '0.6em',
+								readOnly: true,
+							}}
+						/>
+						<Flex
+							gap='2'
+							pos={{ md: 'absolute' }}
+							right={{ md: '10' }}
 						>
-							<Text
-								as='span'
-								fontWeight='bold'
-								fontSize={{ sm: 'xs', md: 'md' }}
-							>
-								Api Key
-							</Text>
-							<FormInput
-								name='apikey'
-								type={`${visible ? 'text' : 'password'}`}
-								otherProps={{
-									value: user.apikey,
-									h: 'fit-content',
-									w: '100%',
-									px: '2',
-									py: '1',
-									fontSize: '0.6em',
-									readOnly: true,
-								}}
-							/>
-						</FormLabel>
-						<Flex gap='2'>
 							<IconButton
 								aria-label='view icon'
 								size={{ sm: 'xs' }}
@@ -126,9 +123,9 @@ const Dashboard = () => {
 								}}
 								icon={
 									visible ? (
-										<ViewIcon boxSize='2.5' />
+										<ViewIcon boxSize='3' />
 									) : (
-										<ViewOffIcon boxSize='2.5' />
+										<ViewOffIcon boxSize='3' />
 									)
 								}
 								onClick={handleView}
@@ -144,7 +141,7 @@ const Dashboard = () => {
 								_active={{
 									bgColor: '#FDF976',
 								}}
-								icon={<CopyIcon boxSize='2.5' />}
+								icon={<CopyIcon boxSize='3' />}
 								onClick={copyToClipboard}
 							/>
 						</Flex>
@@ -181,28 +178,5 @@ const Dashboard = () => {
 		</>
 	);
 };
-
-export async function getServerSideProps(context) {
-	const session = await getServerSession(
-		context.req,
-		context.res,
-		authOptions
-	);
-
-	if (session) {
-		return {
-			props: {
-				data: session,
-			},
-		};
-	}
-
-	return {
-		redirect: {
-			destination: '/signin',
-			permanent: false,
-		},
-	};
-}
 
 export default Dashboard;
