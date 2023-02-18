@@ -10,8 +10,6 @@ export const useMe = () => {
 		isValidating,
 	} = useSWR('/user', fetcher);
 
-	let loading = (!user && !error) || isLoading;
-
 	async function mutateUser(data: unknown, options?: {}) {
 		await mutate(fetcher('/user', data), {
 			...options,
@@ -21,7 +19,7 @@ export const useMe = () => {
 	return {
 		user,
 		error,
-		isLoading: loading,
+		isLoading,
 		isValidating,
 		mutateUser,
 	};

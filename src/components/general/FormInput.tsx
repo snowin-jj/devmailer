@@ -6,10 +6,17 @@ type FormInputTypes = {
 	name: string;
 	type: HTMLInputTypeAttribute;
 	placeholder?: string;
+	w?: any;
 	otherProps?: any;
 };
 
-const FormInput = ({ name, type, placeholder, otherProps }: FormInputTypes) => {
+const FormInput = ({
+	name,
+	type,
+	placeholder,
+	w,
+	otherProps,
+}: FormInputTypes) => {
 	return (
 		<Input
 			type={type}
@@ -21,6 +28,7 @@ const FormInput = ({ name, type, placeholder, otherProps }: FormInputTypes) => {
 			borderRadius='none'
 			size={{ sm: 'sm' }}
 			fontSize={{ sm: '0.6em', md: '0.8em' }}
+			w={w}
 			_hover={{ borderColor: 'none' }}
 			required
 			{...otherProps}
