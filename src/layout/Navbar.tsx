@@ -61,8 +61,8 @@ const Navbar = () => {
 						<Spinner color='secondary' size='xs' />
 					) : (
 						<CustomButton
+							isLink={true}
 							otherProps={{
-								as: Link,
 								href: session ? '/dashboard' : '/signin',
 							}}
 						>

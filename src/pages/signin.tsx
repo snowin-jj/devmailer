@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import AuthForm from '../components/AuthForm';
+import { GetServerSidePropsContext } from 'next';
 
 const SignIn = () => {
 	return (
@@ -17,7 +18,7 @@ const SignIn = () => {
 
 SignIn.authPage = true;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const session = await getServerSession(
 		context.req,
 		context.res,

@@ -1,9 +1,11 @@
 import { Button } from '@chakra-ui/react';
+import Link from 'next/link';
 
 interface IButtonProps {
 	children: React.ReactNode;
 	type?: 'button' | 'submit' | 'reset';
 	isLink?: boolean;
+	isLoading?: boolean;
 	mode?: 'light' | 'dark';
 	size?: {};
 	handleClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -15,6 +17,7 @@ const CustomButton = ({
 	mode = 'light',
 	type = 'button',
 	isLink = false,
+	isLoading,
 	size,
 	handleClick,
 	otherProps,
@@ -23,7 +26,7 @@ const CustomButton = ({
 
 	return (
 		<Button
-			as={isLink && 'a'}
+			as={isLink && Link}
 			type={type}
 			onClick={handleClick}
 			bgColor={colorScheme}
@@ -34,6 +37,7 @@ const CustomButton = ({
 			border='2px'
 			borderColor={colorScheme}
 			borderRadius='none'
+			isLoading={isLoading}
 			_loading={{
 				bgColor: { colorScheme },
 			}}

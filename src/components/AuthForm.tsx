@@ -1,8 +1,7 @@
 import { Grid, Heading, Image, Text, chakra, VStack } from '@chakra-ui/react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { FC, useState } from 'react';
-import { capitalize } from '@/utils/helper';
+import { useState } from 'react';
 import CustomButton from './general/CustomButton';
 import FormInput from './general/FormInput';
 

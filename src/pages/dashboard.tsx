@@ -12,7 +12,6 @@ import {
 	useDisclosure,
 	SlideFade,
 	Flex,
-	FormLabel,
 } from '@chakra-ui/react';
 import { CopyIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useMe } from '@/lib/hooks';

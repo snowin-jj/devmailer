@@ -26,9 +26,9 @@ export default function Home() {
 						Mailer. An API built for developers and businesses.
 					</Text>
 					<CustomButton
+						isLink={true}
 						otherProps={{
-							as: Link,
-							href: '/dashboard',
+							href: '/signin',
 						}}
 					>
 						Get start
