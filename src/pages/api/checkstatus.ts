@@ -6,7 +6,7 @@ export default async function handler(
 	res: NextApiResponse
 ) {
 	try {
-		await prisma.user.findMany();
+		await prisma.$queryRaw`SELECT 1`;
 
 		const health = {
 			uptime: process.uptime(),
