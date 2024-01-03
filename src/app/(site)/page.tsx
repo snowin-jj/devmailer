@@ -7,7 +7,7 @@ import OrangePlaneImg from '@/assets/orange-plane.svg';
 
 export default function Home() {
   return (
-    <section className="flex flex-col mt-10 md:mt-0 md:flex-row gap-4 items-center justify-between px-8">
+    <section className="flex flex-col mt-10 md:mt-0 md:flex-row gap-4 items-center justify-between">
       <div className="flex flex-col items-center text-center md:items-start md:text-left gap-2 max-w-xl">
         <h2 className="font-bold text-4xl">
           Trouble making forms work on the website?
