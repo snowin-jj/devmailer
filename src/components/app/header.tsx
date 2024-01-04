@@ -9,13 +9,6 @@ export default function Header() {
         <Logo href="/dashboard" />
       </div>
       <div className="flex-none gap-2">
-        <div className="form-control">
-          <input
-            type="text"
-            placeholder="Search"
-            className="input input-bordered w-24 md:w-auto"
-          />
-        </div>
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
@@ -36,13 +29,12 @@ export default function Header() {
             className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
           >
             <li>
-              <Link href="/" className="justify-between">
-                Profile
-                <span className="badge">New</span>
+              <Link href="/dashboard?tab=key" className="justify-between">
+                Api Key
               </Link>
             </li>
             <li>
-              <Link href="/">Settings</Link>
+              <Link href="/dashboard?tab=settings">Settings</Link>
             </li>
             <li>
               <a>Logout</a>

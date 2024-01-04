@@ -1,9 +1,11 @@
+'use client';
+
 export default function SideBar() {
   return (
     <aside className="h-full">
       <ul className="h-fit menu bg-base-200 w-56 rounded-box">
         <li>
-          <a>
+          <a href="/dashboard?tab=key">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -23,7 +25,7 @@ export default function SideBar() {
           </a>
         </li>
         <li>
-          <a>
+          <a href="/dashboard?tab=settings">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
