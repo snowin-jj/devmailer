@@ -1,13 +1,13 @@
-import Image from 'next/image';
+import Image from "next/image";
 
-import LetterImg from '@/assets/letter.png';
-import GrayPlaneImg from '@/assets/gray-plane.svg';
-import DarkPlaneImg from '@/assets/dark-plane.svg';
-import OrangePlaneImg from '@/assets/orange-plane.svg';
+import LetterImg from "@/assets/letter.png";
+import GrayPlaneImg from "@/assets/gray-plane.svg";
+import DarkPlaneImg from "@/assets/dark-plane.svg";
+import OrangePlaneImg from "@/assets/orange-plane.svg";
 
 export default function Home() {
   return (
-    <section className="flex flex-col mt-10 md:mt-0 md:flex-row gap-4 items-center justify-between">
+    <section className="flex flex-col mt-10 md:mt-0 md:flex-row gap-4 items-center justify-center md:justify-between px-4">
       <div className="flex flex-col items-center text-center md:items-start md:text-left gap-2 max-w-xl">
         <h2 className="font-bold text-4xl">
           Trouble making forms work on the website?

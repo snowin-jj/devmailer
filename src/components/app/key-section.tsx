@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function KeySection() {
   const [isCopied, setCopied] = useState(false);
   const [hide, setHide] = useState(true);
   const apiKey = hide
-    ? '0000000-00000-000000-000-00000'
-    : "'a596e336-b864-40b8-95a0-c68e0e2cca34'";
+    ? "0000000-00000-000000-000-00000"
+    : "a596e336-b864-40b8-95a0-c68e0e2cca34";
 
   function handleCopy() {
     setCopied(true);
@@ -29,7 +29,7 @@ export default function KeySection() {
       <h2 className="font-bold text-2xl">Your key</h2>
       <div className="flex items-center gap-2">
         <span className="bg-base-300 py-2 px-3">{apiKey}</span>
-        <div className="tooltip" data-tip={hide ? 'show' : 'hide'}>
+        <div className="tooltip" data-tip={hide ? "show" : "hide"}>
           <button
             className="bg-primary text-base-100 p-2"
             onClick={handleShowHide}
@@ -71,7 +71,7 @@ export default function KeySection() {
             )}
           </button>
         </div>
-        <div className="tooltip" data-tip={isCopied ? 'copied!' : 'copy'}>
+        <div className="tooltip" data-tip={isCopied ? "copied!" : "copy"}>
           <button className="bg-primary text-base-100 p-2" onClick={handleCopy}>
             <svg
               xmlns="http://www.w3.org/2000/svg"

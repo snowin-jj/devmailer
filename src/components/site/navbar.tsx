@@ -1,6 +1,7 @@
-import Link from 'next/link';
-import Logo from '../ui/logo';
-import Navigation from './navigation';
+import Link from "next/link";
+
+import Logo from "../ui/logo";
+import Navigation from "./navigation";
 
 export default function Navbar() {
   return (
@@ -37,8 +38,10 @@ export default function Navbar() {
           <Navigation />
         </ul>
       </nav>
-      <div className="navbar-end">
-        <a className="btn btn-primary">Sign in</a>
+      <div className="navbar-end mr-4">
+        <Link href="/signin" className="btn btn-primary">
+          Sign in
+        </Link>
       </div>
     </div>
   );
