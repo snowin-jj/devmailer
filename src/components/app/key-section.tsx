@@ -2,17 +2,15 @@
 
 import { useState } from "react";
 
-export default function KeySection() {
+export default function KeySection({ apikey }: { apikey: string }) {
   const [isCopied, setCopied] = useState(false);
   const [hide, setHide] = useState(true);
-  const apiKey = hide
-    ? "0000000-00000-000000-000-00000"
-    : "a596e336-b864-40b8-95a0-c68e0e2cca34";
+  const keyValue = hide ? "0000000-0000-0000-0000-0000000000" : apikey;
 
   function handleCopy() {
     setCopied(true);
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(apiKey);
+      navigator.clipboard.writeText(apikey);
     }
 
     setTimeout(() => {
@@ -28,7 +26,7 @@ export default function KeySection() {
     <div className="flex flex-col gap-2">
       <h2 className="font-bold text-2xl">Your key</h2>
       <div className="flex items-center gap-2">
-        <span className="bg-base-300 py-2 px-3">{apiKey}</span>
+        <span className="bg-base-300 py-2 px-3 truncate">{keyValue}</span>
         <div className="tooltip" data-tip={hide ? "show" : "hide"}>
           <button
             className="bg-primary text-base-100 p-2"

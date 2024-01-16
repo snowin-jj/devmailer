@@ -1,4 +1,6 @@
-'use client';
+"use client";
+
+import { signOut } from "next-auth/react";
 
 export default function SideBar() {
   return (
@@ -45,7 +47,7 @@ export default function SideBar() {
           </a>
         </li>
         <li>
-          <a>
+          <a onClick={() => signOut()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"

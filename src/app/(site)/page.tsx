@@ -4,6 +4,7 @@ import LetterImg from "@/assets/letter.png";
 import GrayPlaneImg from "@/assets/gray-plane.svg";
 import DarkPlaneImg from "@/assets/dark-plane.svg";
 import OrangePlaneImg from "@/assets/orange-plane.svg";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -16,7 +17,9 @@ export default function Home() {
           No worries. Send emails without any issues with Dev Mailer. An API
           built for developers and businesses.
         </p>
-        <button className="btn-primary btn w-fit">Get Started</button>
+        <Link href="/dashboard" className="btn-primary btn w-fit">
+          Get Started
+        </Link>
       </div>
       <div className="relative">
         <Image

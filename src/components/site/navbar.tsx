@@ -1,9 +1,12 @@
 import Link from "next/link";
+import { getServerSession } from "next-auth";
 
 import Logo from "../ui/logo";
 import Navigation from "./navigation";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const session = await getServerSession();
+
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -39,9 +42,15 @@ export default function Navbar() {
         </ul>
       </nav>
       <div className="navbar-end mr-4">
-        <Link href="/signin" className="btn btn-primary">
-          Sign in
-        </Link>
+        {session?.user ? (
+          <Link href="/dashboard" className="btn btn-primary">
+            Dashboard
+          </Link>
+        ) : (
+          <Link href="/signin" className="btn btn-primary">
+            Sign in
+          </Link>
+        )}
       </div>
     </div>
   );

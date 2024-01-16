@@ -1,11 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import { signIn } from "next-auth/react";
 
 import GoogleIcon from "@/assets/google.svg";
 
 export default function AuthForm() {
+  const [isSubmiting, setIssubmiting] = useState<boolean>(false);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -14,11 +17,17 @@ export default function AuthForm() {
     if (!email) throw new Error("Please provide valid email");
 
     try {
+      setIssubmiting(true);
       await signIn("email", {
         email,
         callbackUrl: "/dashboard",
       });
-    } catch (error) {}
+    } catch (error) {
+      const e = error as Error;
+      throw new Error(e.message);
+    } finally {
+      setIssubmiting(false);
+    }
   }
 
   return (
@@ -37,7 +46,13 @@ export default function AuthForm() {
           />
         </div>
         <div className="form-control mt-6">
-          <button className="btn btn-primary">Login</button>
+          <button className="btn btn-primary">
+            {isSubmiting ? (
+              <span className="loading loading-spinner"></span>
+            ) : (
+              "Login"
+            )}
+          </button>
         </div>
         <span className="text-center text-accent">or</span>
         <div className="form-control">

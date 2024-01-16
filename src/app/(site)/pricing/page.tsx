@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function PricingPage() {
   return (
     <section className="grid place-items-center">
@@ -9,7 +11,9 @@ export default function PricingPage() {
           Get your API keys and start hacking. Ideal for individual developers
           working on personal sites, and client projects.
         </p>
-        <button className="btn btn-primary">Start Now</button>
+        <Link href="/dashboard" className="btn btn-primary">
+          Start Now
+        </Link>
       </div>
     </section>
   );

@@ -1,8 +1,14 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import Logo from '../ui/logo';
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import Logo from "../ui/logo";
+import { signOut } from "next-auth/react";
+import { useMe } from "@/hooks/useMe";
 
 export default function Header() {
+  const { user } = useMe();
+
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
@@ -18,7 +24,8 @@ export default function Header() {
             <div className="w-10 rounded-full">
               <Image
                 alt="Tailwind CSS Navbar component"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                src={user.image}
+                priority
                 width={48}
                 height={48}
               />
@@ -37,7 +44,7 @@ export default function Header() {
               <Link href="/dashboard?tab=settings">Settings</Link>
             </li>
             <li>
-              <a>Logout</a>
+              <a onClick={() => signOut()}>Logout</a>
             </li>
           </ul>
         </div>

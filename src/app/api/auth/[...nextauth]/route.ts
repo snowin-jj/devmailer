@@ -19,6 +19,17 @@ const handler = NextAuth({
       from: process.env.MAIL_ID,
     }),
   ],
+  session: {
+    strategy: "jwt",
+  },
+  callbacks: {
+    async jwt({ token }) {
+      return token;
+    },
+  },
+  pages: {
+    signIn: "/signin",
+  },
 });
 
 export { handler as GET, handler as POST };
