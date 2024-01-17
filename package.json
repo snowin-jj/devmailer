@@ -12,6 +12,8 @@
     "@auth/prisma-adapter": "^1.0.14",
     "@nanostores/react": "^0.7.1",
     "@prisma/client": "^5.8.0",
+    "@upstash/ratelimit": "^1.0.0",
+    "@upstash/redis": "^1.28.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "nanostores": "^0.9.5",

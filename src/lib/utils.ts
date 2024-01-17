@@ -1,4 +1,4 @@
-import { type ClassValue, clsx } from "clsx";
+import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -44,7 +44,16 @@ export default async function fetcher(url: string, data?: unknown) {
   return jsonData;
 }
 
-export function randomNum(min: number, max: number) {
-  // min and max included
-  return Math.floor(Math.random() * (max - min + 1) + min);
+export function getIp(req: Request) {
+  const FALLBACK_IP_ADDRESS = "0.0.0.0";
+  const forwardedFor = req.headers.get("x-forwarded-for");
+  let id: string = FALLBACK_IP_ADDRESS;
+
+  if (forwardedFor) {
+    id = forwardedFor.split(",")[0]!;
+  } else {
+    id = req.headers.get("x-real-ip")!;
+  }
+
+  return id;
 }

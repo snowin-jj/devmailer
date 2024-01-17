@@ -19,11 +19,10 @@ export default async function SignInPage() {
         >
           <div className="absolute inset-0 bg-primary bg-opacity-50"></div>
           <div className="relative z-20 text-left text-white px-4 md:px-20">
-            <h1 className="text-5xl font-bold">Login now!</h1>
+            <h1 className="text-5xl font-bold">Unleash Your Email Potential</h1>
             <p className="py-6">
-              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-              excepturi exercitationem quasi. In deleniti eaque aut repudiandae
-              et a id nisi.
+              Devmailer empowers developers to streamline email functionality
+              and focus on what matters most: building exceptional apps.
             </p>
           </div>
         </div>
