@@ -44,6 +44,9 @@ export default function Header() {
               <Link href="/dashboard?tab=settings">Settings</Link>
             </li>
             <li>
+              <Link href="/contact?ref=app">Contact</Link>
+            </li>
+            <li>
               <a onClick={() => signOut()}>Logout</a>
             </li>
           </ul>

@@ -7,7 +7,7 @@ import { signIn } from "next-auth/react";
 import GoogleIcon from "@/assets/google.svg";
 
 export default function AuthForm() {
-  const [isSubmiting, setIssubmiting] = useState<boolean>(false);
+  const [isSubmitting, setIssubmitting] = useState<boolean>(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -17,7 +17,7 @@ export default function AuthForm() {
     if (!email) throw new Error("Please provide valid email");
 
     try {
-      setIssubmiting(true);
+      setIssubmitting(true);
       await signIn("email", {
         email,
         callbackUrl: "/dashboard",
@@ -26,7 +26,7 @@ export default function AuthForm() {
       const e = error as Error;
       throw new Error(e.message);
     } finally {
-      setIssubmiting(false);
+      setIssubmitting(false);
     }
   }
 
@@ -47,7 +47,7 @@ export default function AuthForm() {
         </div>
         <div className="form-control mt-6">
           <button className="btn btn-primary">
-            {isSubmiting ? (
+            {isSubmitting ? (
               <span className="loading loading-spinner"></span>
             ) : (
               "Login"
@@ -56,7 +56,15 @@ export default function AuthForm() {
         </div>
         <span className="text-center text-accent">or</span>
         <div className="form-control">
-          <button className="btn">
+          <button
+            type="button"
+            className="btn"
+            onClick={() =>
+              signIn("google", {
+                callbackUrl: "/dashboard",
+              })
+            }
+          >
             <Image src={GoogleIcon} alt="google icon" width={18} height={18} />
             Continue with google
           </button>

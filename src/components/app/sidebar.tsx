@@ -1,13 +1,14 @@
 "use client";
 
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 
 export default function SideBar() {
   return (
     <aside className="h-full">
       <ul className="h-fit menu bg-base-200 w-56 rounded-box">
         <li>
-          <a href="/dashboard?tab=key">
+          <Link href="/dashboard?tab=key">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -24,10 +25,10 @@ export default function SideBar() {
               <circle cx="16.5" cy="7.5" r=".5" />
             </svg>
             Api key
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/dashboard?tab=settings">
+          <Link href="/dashboard?tab=settings">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -44,7 +45,27 @@ export default function SideBar() {
               <circle cx="12" cy="12" r="3" />
             </svg>
             Settings
-          </a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/contact?ref=app">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-mail"
+            >
+              <rect width="20" height="16" x="2" y="4" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            Contact
+          </Link>
         </li>
         <li>
           <a onClick={() => signOut()}>
