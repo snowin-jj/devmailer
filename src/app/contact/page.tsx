@@ -48,7 +48,7 @@ export default function ContactPage({
 
   return (
     <section className="grid place-items-center min-h-screen">
-      <form className="w-full max-w-md" onSubmit={handleSubmit}>
+      <form className="w-full max-w-md p-2" onSubmit={handleSubmit}>
         <h2 className="text-4xl font-bold">
           Contact <span className="text-[#D6A567]">us</span>
         </h2>

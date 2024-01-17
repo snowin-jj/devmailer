@@ -25,13 +25,17 @@ export default function KeySection({ apikey }: { apikey: string }) {
   return (
     <div className="flex flex-col gap-2">
       <h2 className="font-bold text-2xl">Your key</h2>
-      <div className="flex items-center gap-2">
-        <span className="bg-base-300 py-2 px-3 truncate">{keyValue}</span>
-        <div className="tooltip" data-tip={hide ? "show" : "hide"}>
+      <div className="flex flex-col items-end md:flex-row md:items-center gap-2">
+        <span className="bg-base-300 py-2 px-3">{keyValue}</span>
+        <div
+          className="tooltip w-full md:w-fit"
+          data-tip={hide ? "show" : "hide"}
+        >
           <button
-            className="bg-primary text-base-100 p-2"
+            className="bg-primary text-base-100 p-2 w-full md:w-fit grid place-items-center"
             onClick={handleShowHide}
           >
+            <p className="md:hidden">{hide ? "Show" : "Hide"}</p>
             {hide ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +47,7 @@ export default function KeySection({ apikey }: { apikey: string }) {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="lucide lucide-eye-off"
+                className="lucide lucide-eye-off hidden md:block"
               >
                 <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
                 <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
@@ -61,7 +65,7 @@ export default function KeySection({ apikey }: { apikey: string }) {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="lucide lucide-eye"
+                className="lucide lucide-eye hidden md:block"
               >
                 <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
                 <circle cx="12" cy="12" r="3" />
@@ -69,8 +73,15 @@ export default function KeySection({ apikey }: { apikey: string }) {
             )}
           </button>
         </div>
-        <div className="tooltip" data-tip={isCopied ? "copied!" : "copy"}>
-          <button className="bg-primary text-base-100 p-2" onClick={handleCopy}>
+        <div
+          className="tooltip w-full md:w-fit"
+          data-tip={isCopied ? "copied!" : "copy"}
+        >
+          <button
+            className="bg-primary w-full md:w-fit text-base-100 p-2 grid place-items-center"
+            onClick={handleCopy}
+          >
+            <p className="md:hidden">{isCopied ? "Copied" : "Copy"}</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="22"
@@ -81,7 +92,7 @@ export default function KeySection({ apikey }: { apikey: string }) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="lucide lucide-clipboard"
+              className="lucide lucide-clipboard hidden md:block"
             >
               <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
               <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />

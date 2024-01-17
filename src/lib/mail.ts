@@ -32,7 +32,6 @@ export async function sendMail(mailService: MailService) {
     });
   } catch (error) {
     const e = error as Error;
-    console.error(e);
     throw new Error(e.message);
   }
 }

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function SideBar() {
   return (
-    <aside className="h-full">
+    <aside className="h-fit md:h-full">
       <ul className="h-fit menu bg-base-200 w-56 rounded-box">
         <li>
           <Link href="/dashboard?tab=key">
