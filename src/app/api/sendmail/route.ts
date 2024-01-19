@@ -18,6 +18,7 @@ const ratelimit = new Ratelimit({
 
 export async function POST(request: NextRequest) {
   try {
+    const origin = request.headers.get("origin");
     const searchParams = request.nextUrl.searchParams;
     const { to, from, body, subject } = await request.json();
     const apikey = searchParams.get("apikey");
@@ -63,6 +64,18 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     const e = error as Error;
-    return Response.json({ error: e.message }, { status: 500 });
+    return Response.json(
+      { error: e.message },
+      {
+        status: 500,
+        headers: {
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Origin": origin || "*",
+          "Access-Control-Allow-Methods": "POST",
+          "Access-Control-Allow-Headers":
+            "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
+        },
+      }
+    );
   }
 }
