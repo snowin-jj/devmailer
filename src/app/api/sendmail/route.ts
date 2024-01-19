@@ -18,6 +18,7 @@ const ratelimit = new Ratelimit({
 
 export async function POST(request: NextRequest) {
   try {
+    const origin = request.headers.get("origin");
     const searchParams = request.nextUrl.searchParams;
     const { to, from, body, subject } = await request.json();
     const apikey = searchParams.get("apikey");
@@ -61,7 +62,7 @@ export async function POST(request: NextRequest) {
         status: 200,
         headers: {
           ["x-api-remaining-call"]: `${remaining}`,
-          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Origin": origin || "*",
           "Access-Control-Allow-Methods": "POST",
           "Access-Control-Allow-Headers": "Content-Type, Authorization",
         },
