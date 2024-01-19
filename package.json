@@ -16,6 +16,7 @@
     "@upstash/redis": "^1.28.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "cors": "^2.8.5",
     "nanostores": "^0.9.5",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
@@ -26,6 +27,7 @@
     "tailwind-merge": "^2.2.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/node": "^20.11.5",
     "@types/nodemailer": "^6.4.14",
     "@types/react": "^18.2.48",

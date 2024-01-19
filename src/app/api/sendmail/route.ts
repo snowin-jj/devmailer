@@ -1,12 +1,18 @@
 import { type NextRequest } from "next/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import Cors from "cors";
 
 import { MailService, sendMail } from "@/lib/mail";
 import db from "@/lib/db";
+import { runMiddleware } from "@/lib/middleware";
 
 type Unit = "ms" | "s" | "m" | "h" | "d";
 type Duration = `${number} ${Unit}` | `${number}${Unit}`;
+
+const cors = Cors({
+  methods: ["POST", "GET", "HEAD"],
+});
 
 const RATELIMIT_TOKENS = parseInt(process.env.RATELIMIT_TOKENS!);
 const RATELIMIT_WINDOW = process.env.RATELIMIT_WINDOW as Duration;
@@ -17,7 +23,8 @@ const ratelimit = new Ratelimit({
 });
 
 export async function POST(request: NextRequest) {
-  const origin = request.headers.get("origin");
+  await runMiddleware(request, cors);
+
   try {
     const searchParams = request.nextUrl.searchParams;
     const { to, from, body, subject } = await request.json();
@@ -27,13 +34,6 @@ export async function POST(request: NextRequest) {
         { error: "Not Authorized" },
         {
           status: 401,
-          headers: {
-            "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Origin": origin || "*",
-            "Access-Control-Allow-Methods": "POST",
-            "Access-Control-Allow-Headers":
-              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
-          },
         }
       );
 
@@ -44,13 +44,6 @@ export async function POST(request: NextRequest) {
         { error: "Invalid key" },
         {
           status: 401,
-          headers: {
-            "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Origin": origin || "*",
-            "Access-Control-Allow-Methods": "POST",
-            "Access-Control-Allow-Headers":
-              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
-          },
         }
       );
 
@@ -65,11 +58,6 @@ export async function POST(request: NextRequest) {
           status: 429,
           headers: {
             ["x-api-ttl"]: `${ttl}`,
-            "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Origin": origin || "*",
-            "Access-Control-Allow-Methods": "POST",
-            "Access-Control-Allow-Headers":
-              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
           },
         }
       );
@@ -83,13 +71,6 @@ export async function POST(request: NextRequest) {
         { error: "Something went wrong" },
         {
           status: 500,
-          headers: {
-            "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Origin": origin || "*",
-            "Access-Control-Allow-Methods": "POST",
-            "Access-Control-Allow-Headers":
-              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
-          },
         }
       );
     }
@@ -100,11 +81,6 @@ export async function POST(request: NextRequest) {
         status: 200,
         headers: {
           ["x-api-remaining-call"]: `${remaining}`,
-          "Access-Control-Allow-Credentials": "true",
-          "Access-Control-Allow-Origin": origin || "*",
-          "Access-Control-Allow-Methods": "POST",
-          "Access-Control-Allow-Headers":
-            "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
         },
       }
     );
@@ -114,13 +90,6 @@ export async function POST(request: NextRequest) {
       { error: e.message },
       {
         status: 500,
-        headers: {
-          "Access-Control-Allow-Credentials": "true",
-          "Access-Control-Allow-Origin": origin || "*",
-          "Access-Control-Allow-Methods": "POST",
-          "Access-Control-Allow-Headers":
-            "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
-        },
       }
     );
   }
