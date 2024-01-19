@@ -1,4 +1,4 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { type NextRequest } from "next/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
@@ -18,7 +18,6 @@ const ratelimit = new Ratelimit({
 
 export async function POST(request: NextRequest) {
   try {
-    const origin = request.headers.get("origin");
     const searchParams = request.nextUrl.searchParams;
     const { to, from, body, subject } = await request.json();
     const apikey = searchParams.get("apikey");
@@ -35,16 +34,12 @@ export async function POST(request: NextRequest) {
     if (!success) {
       const now = Date.now();
       const ttl = Math.floor((reset - now) / 1000);
-      return new NextResponse(
-        JSON.stringify({ message: "Too Many Requests" }),
+      return Response.json(
+        { message: "Too Many Requests" },
         {
           status: 429,
           headers: {
             ["x-api-ttl"]: `${ttl}`,
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": origin || "*",
-            "Access-Control-Allow-Methods": "POST",
-            "Access-Control-Allow-Headers": "Content-Type, Authorization",
           },
         }
       );
@@ -54,21 +49,18 @@ export async function POST(request: NextRequest) {
     const res = await sendMail(mailService);
 
     if (res.rejected.length > 0) {
-      return new NextResponse(
-        JSON.stringify({ error: "Something went wrong" }),
-        { status: 500 }
-      );
+      return Response.json({ error: "Something went wrong" }, { status: 500 });
     }
 
-    return new NextResponse(JSON.stringify({ message: "Mail sent" }), {
-      status: 200,
-      headers: {
-        ["x-api-remaining-call"]: `${remaining}`,
-        "Access-Control-Allow-Origin": origin || "*",
-        "Access-Control-Allow-Methods": "POST",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      },
-    });
+    return Response.json(
+      { message: "Mail sent" },
+      {
+        status: 200,
+        headers: {
+          ["x-api-remaining-call"]: `${remaining}`,
+        },
+      }
+    );
   } catch (error) {
     const e = error as Error;
     return Response.json({ error: e.message }, { status: 500 });
