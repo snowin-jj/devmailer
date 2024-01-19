@@ -40,6 +40,9 @@ export async function POST(request: NextRequest) {
           status: 429,
           headers: {
             ["x-api-ttl"]: `${ttl}`,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
           },
         }
       );
@@ -58,6 +61,9 @@ export async function POST(request: NextRequest) {
         status: 200,
         headers: {
           ["x-api-remaining-call"]: `${remaining}`,
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
         },
       }
     );
