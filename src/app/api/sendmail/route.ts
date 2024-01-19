@@ -17,18 +17,42 @@ const ratelimit = new Ratelimit({
 });
 
 export async function POST(request: NextRequest) {
+  const origin = request.headers.get("origin");
   try {
-    const origin = request.headers.get("origin");
     const searchParams = request.nextUrl.searchParams;
     const { to, from, body, subject } = await request.json();
     const apikey = searchParams.get("apikey");
     if (!apikey)
-      return Response.json({ error: "Not Authorized" }, { status: 401 });
+      return Response.json(
+        { error: "Not Authorized" },
+        {
+          status: 401,
+          headers: {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": origin || "*",
+            "Access-Control-Allow-Methods": "POST",
+            "Access-Control-Allow-Headers":
+              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
+          },
+        }
+      );
 
     const isValidKey = await db.user.findUnique({ where: { apikey } });
 
     if (!isValidKey)
-      return Response.json({ error: "Invalid key" }, { status: 401 });
+      return Response.json(
+        { error: "Invalid key" },
+        {
+          status: 401,
+          headers: {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": origin || "*",
+            "Access-Control-Allow-Methods": "POST",
+            "Access-Control-Allow-Headers":
+              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
+          },
+        }
+      );
 
     // Ratelimit the request
     const { success, reset, remaining } = await ratelimit.limit(apikey);
@@ -41,6 +65,11 @@ export async function POST(request: NextRequest) {
           status: 429,
           headers: {
             ["x-api-ttl"]: `${ttl}`,
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": origin || "*",
+            "Access-Control-Allow-Methods": "POST",
+            "Access-Control-Allow-Headers":
+              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
           },
         }
       );
@@ -50,7 +79,19 @@ export async function POST(request: NextRequest) {
     const res = await sendMail(mailService);
 
     if (res.rejected.length > 0) {
-      return Response.json({ error: "Something went wrong" }, { status: 500 });
+      return Response.json(
+        { error: "Something went wrong" },
+        {
+          status: 500,
+          headers: {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": origin || "*",
+            "Access-Control-Allow-Methods": "POST",
+            "Access-Control-Allow-Headers":
+              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
+          },
+        }
+      );
     }
 
     return Response.json(
@@ -59,6 +100,11 @@ export async function POST(request: NextRequest) {
         status: 200,
         headers: {
           ["x-api-remaining-call"]: `${remaining}`,
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Origin": origin || "*",
+          "Access-Control-Allow-Methods": "POST",
+          "Access-Control-Allow-Headers":
+            "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
         },
       }
     );
