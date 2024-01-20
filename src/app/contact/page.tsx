@@ -25,6 +25,7 @@ export default function ContactPage({
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<MailPayloadSchema>({
     resolver: zodResolver(mailPayloadSchema),
@@ -59,6 +60,7 @@ export default function ContactPage({
       toast.error(e.message);
     } finally {
       setIsSubmitting(false);
+      reset();
     }
   }
 
