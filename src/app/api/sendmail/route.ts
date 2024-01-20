@@ -26,6 +26,11 @@ export async function POST(request: NextRequest) {
         { error: "Not Authorized" },
         {
           status: 401,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, HEAD",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
         }
       );
 
@@ -36,6 +41,11 @@ export async function POST(request: NextRequest) {
         { error: "Invalid key" },
         {
           status: 401,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, HEAD",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
         }
       );
 
@@ -50,6 +60,9 @@ export async function POST(request: NextRequest) {
           status: 429,
           headers: {
             ["x-api-ttl"]: `${ttl}`,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, HEAD",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
           },
         }
       );
@@ -63,6 +76,11 @@ export async function POST(request: NextRequest) {
         { error: "Something went wrong" },
         {
           status: 500,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, HEAD",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
         }
       );
     }
@@ -73,6 +91,9 @@ export async function POST(request: NextRequest) {
         status: 200,
         headers: {
           ["x-api-remaining-call"]: `${remaining}`,
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, HEAD",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
         },
       }
     );
@@ -82,6 +103,11 @@ export async function POST(request: NextRequest) {
       { error: e.message },
       {
         status: 500,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, HEAD",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
       }
     );
   }
