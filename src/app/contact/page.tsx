@@ -1,54 +1,70 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { type MailPayloadSchema, mailPayloadSchema } from "@/lib/schema";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { cn } from "@/lib/utils";
 
 export default function ContactPage({
   searchParams,
 }: {
-  searchParams: { ref: string };
+  searchParams: { from: string };
 }) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const navigation = useRouter();
-  const { ref } = searchParams;
+  const { from } = searchParams;
+  const SUBJECTS = {
+    site: "Plan extend",
+    app: "Feature Request",
+  };
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      from: formData.get("name"),
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<MailPayloadSchema>({
+    resolver: zodResolver(mailPayloadSchema),
+    defaultValues: {
+      body: "",
+      from: "",
       to: process.env.NEXT_PUBLIC_EMAIL,
-      subject: formData.get("subject"),
-      body: formData.get("describe"),
-    };
-    const res = await fetch(
-      `/api/sendmail?apikey=${process.env.NEXT_PUBLIC_KEY}`,
-      {
+      subject: SUBJECTS[from as "site" | "app"] || "Bug Report",
+    },
+  });
+
+  async function onSubmit(data: MailPayloadSchema) {
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`/api/feedback`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
         },
+      });
+
+      const jsonRes = await res.json();
+
+      if (res.ok) {
+        toast.success(jsonRes.message);
+      } else {
+        toast.error(jsonRes.error);
       }
-    );
-
-    if (res.ok) {
-      toast.success("Thanks for your feedback");
-    } else if (res.status === 429) {
-      toast.error("Facing too many request! Please try after sometime");
-    } else {
-      toast.error("Something went wrong");
+    } catch (error) {
+      const e = error as Error;
+      toast.error(e.message);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setIsSubmitting(false);
   }
 
   return (
     <section className="grid place-items-center min-h-screen">
-      <form className="w-full max-w-md p-2" onSubmit={handleSubmit}>
+      <form className="w-full max-w-md p-2" onSubmit={handleSubmit(onSubmit)}>
         <h2 className="text-4xl font-bold">
           Contact <span className="text-[#D6A567]">us</span>
         </h2>
@@ -56,33 +72,46 @@ export default function ContactPage({
           <div className="label">
             <span className="label-text">Subject</span>
           </div>
-          <select
+          <Controller
+            {...register("subject")}
+            render={({ field }) => (
+              <select {...field} className="select select-bordered w-full">
+                <option value="Feature Request">Feature Request</option>
+                <option value="Plan extend">Plan extend</option>
+                <option value="Bug report">Bug report</option>
+              </select>
+            )}
             name="subject"
-            className="select select-bordered w-full"
-            defaultValue={
-              ref === "site"
-                ? "Plan extend"
-                : ref === "app"
-                ? "Feature Request"
-                : "Bug report"
-            }
-          >
-            <option value="Feature Request">Feature Request</option>
-            <option value="Plan extend">Plan extend</option>
-            <option value="Bug report">Bug report</option>
-          </select>
+            control={control}
+          />
+
+          {errors.subject && (
+            <div className="label">
+              <span className="label-text-alt text-error">
+                {errors.subject.message}
+              </span>
+            </div>
+          )}
         </label>
         <label className="form-control w-full" htmlFor="name">
           <div className="label">
             <span className="label-text">What is your name/organization?</span>
           </div>
           <input
-            name="name"
             type="text"
             placeholder="Name"
-            className="input input-bordered w-full"
-            required
+            className={cn("input input-bordered w-full", {
+              "input-error": errors.from,
+            })}
+            {...register("from")}
           />
+          {errors.from && (
+            <div className="label">
+              <span className="label-text-alt text-error">
+                {errors.from.message}
+              </span>
+            </div>
+          )}
         </label>
         <label className="form-control w-full" htmlFor="describe">
           <div className="label">
@@ -90,20 +119,32 @@ export default function ContactPage({
           </div>
           <textarea
             required
-            name="describe"
             placeholder="Describe"
-            className="textarea textarea-bordered h-24"
+            className={cn("textarea textarea-bordered h-24", {
+              "textarea-error": errors.body,
+            })}
+            {...register("body")}
           ></textarea>
+          {errors.body && (
+            <div className="label">
+              <span className="label-text-alt text-error">
+                {errors.body.message}
+              </span>
+            </div>
+          )}
         </label>
-        <label className="form-control w-full my-2">
-          <button type="submit" className="btn btn-primary">
-            {isSubmitting ? (
-              <span className="loading loading-spinner"></span>
-            ) : (
-              "Submit"
-            )}
-          </button>
-        </label>
+        <input readOnly hidden {...register("to")} />
+        <button
+          type="submit"
+          className="btn btn-primary w-full my-2"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <span className="loading loading-spinner"></span>
+          ) : (
+            "Submit"
+          )}
+        </button>
         <label className="form-control w-full my-2">
           <button
             type="button"
@@ -113,6 +154,7 @@ export default function ContactPage({
             Back
           </button>
         </label>
+        {errors.to && <p>{errors.to.message}</p>}
       </form>
     </section>
   );

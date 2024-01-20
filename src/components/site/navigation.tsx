@@ -18,7 +18,7 @@ export default function Navigation() {
         <Link href="/pricing">Pricing</Link>
       </li>
       <li>
-        <Link href="/contact?ref=site">Contact</Link>
+        <Link href="/contact?from=site">Contact</Link>
       </li>
     </>
   );

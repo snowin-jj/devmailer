@@ -4,6 +4,7 @@ import { Redis } from "@upstash/redis";
 
 import { MailService, sendMail } from "@/lib/mail";
 import db from "@/lib/db";
+import { mailPayloadSchema } from "@/lib/schema";
 
 type Unit = "ms" | "s" | "m" | "h" | "d";
 type Duration = `${number} ${Unit}` | `${number}${Unit}`;
@@ -18,8 +19,8 @@ const ratelimit = new Ratelimit({
 
 export async function POST(request: NextRequest) {
   try {
+    // check api
     const searchParams = request.nextUrl.searchParams;
-    const { to, from, body, subject } = await request.json();
     const apikey = searchParams.get("apikey");
     if (!apikey)
       return Response.json(
@@ -34,8 +35,8 @@ export async function POST(request: NextRequest) {
         }
       );
 
+    // validate api
     const isValidKey = await db.user.findUnique({ where: { apikey } });
-
     if (!isValidKey)
       return Response.json(
         { error: "Invalid key" },
@@ -68,6 +69,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // validate payload
+    const validatedPayload = await mailPayloadSchema.safeParseAsync(
+      await request.json()
+    );
+
+    if (!validatedPayload.success) {
+      const { error } = validatedPayload;
+      return Response.json(
+        { error: error.formErrors.fieldErrors },
+        { status: 400 }
+      );
+    }
+
+    // send mail
+    const { from, to, body, subject } = validatedPayload.data;
     const mailService = new MailService(from, to, subject, body);
     const res = await sendMail(mailService);
 
@@ -98,7 +114,13 @@ export async function POST(request: NextRequest) {
       }
     );
   } catch (error) {
-    const e = error as Error;
+    let e = error as Error;
+
+    if (e.name === "SyntaxError") {
+      e.message =
+        "Payload is empty. Please you have provide the required fields correctly!";
+    }
+
     return Response.json(
       { error: e.message },
       {

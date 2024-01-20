@@ -48,7 +48,7 @@ export default function SideBar() {
           </Link>
         </li>
         <li>
-          <Link href="/contact?ref=app">
+          <Link href="/contact?from=app">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
