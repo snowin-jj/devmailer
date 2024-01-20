@@ -1,18 +1,12 @@
 import { type NextRequest } from "next/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import Cors from "cors";
 
 import { MailService, sendMail } from "@/lib/mail";
 import db from "@/lib/db";
-import { runMiddleware } from "@/lib/middleware";
 
 type Unit = "ms" | "s" | "m" | "h" | "d";
 type Duration = `${number} ${Unit}` | `${number}${Unit}`;
-
-const cors = Cors({
-  methods: ["POST", "GET", "HEAD"],
-});
 
 const RATELIMIT_TOKENS = parseInt(process.env.RATELIMIT_TOKENS!);
 const RATELIMIT_WINDOW = process.env.RATELIMIT_WINDOW as Duration;
@@ -23,8 +17,6 @@ const ratelimit = new Ratelimit({
 });
 
 export async function POST(request: NextRequest) {
-  await runMiddleware(request, cors);
-
   try {
     const searchParams = request.nextUrl.searchParams;
     const { to, from, body, subject } = await request.json();
