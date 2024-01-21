@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
       const now = Date.now();
       const ttl = Math.floor((reset - now) / 1000);
       return Response.json(
-        { message: "Too Many Requests" },
+        { error: "Too Many Requests" },
         {
           status: 429,
           headers: {
