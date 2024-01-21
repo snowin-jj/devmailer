@@ -115,16 +115,18 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     let e = error as Error;
+    let status: number = 500;
 
     if (e.name === "SyntaxError") {
       e.message =
         "Payload is empty. Please you have provide the required fields correctly!";
+        status = 404
     }
 
     return Response.json(
       { error: e.message },
       {
-        status: 500,
+        status,
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, HEAD",
