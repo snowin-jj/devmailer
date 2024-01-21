@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
     if (e.name === "SyntaxError") {
       e.message =
         "Payload is empty. Please you have provide the required fields correctly!";
-        status = 404
+        status = 400
     }
 
     return Response.json(
